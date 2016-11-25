@@ -1,23 +1,21 @@
-<p>
-  upload works!
-</p>
-
-<input type="file"
-       ngFileSelect
-       [options]="options"
-       (onUpload)="handleUpload($event)">
-
-<!-- drag & drop file example-->
-<style>
-  .file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
-</style>
-<div ngFileDrop
-     [options]="options"
-     (onUpload)="handleUpload($event)"
-     [ngClass]="{'file-over': hasBaseDropZoneOver}"
-     (onFileOver)="fileOverBase($event)">
-</div>
-
-<div>
-Response: {{ uploadFile | json }}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="vertical-align">
+      <div class="jumbotron">
+        <img src="http://ng2-uploader.com/images/icon.png" alt="">
+        <h3 class="text-uppercase text-info text-xs-center">drag & drop</h3>
+        <br>
+        <br>
+        <input hidden type="file"
+        ngFileSelect
+        [options]="options"
+        (onUpload)="handleUpload($event)">
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-info btn-block text-uppercase">browse</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,13 @@
+.jumbotron img {
+    margin: 0 auto;
+    display: block;
+}
+
+.vertical-align {
+    display: flex;
+    height: calc(100vh - 60px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
