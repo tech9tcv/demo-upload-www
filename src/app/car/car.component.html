@@ -1,0 +1,36 @@
+<p>
+  car works!
+</p>
+<div class="container">
+  <form>
+    <div class="form-group">
+      <label for="make">make</label>
+      <input type="text" class="form-control" id="make" 
+        [(ngModel)]="car.make"
+        name="make"
+        required>
+    </div>
+    <div class="form-group">
+      <label for="model">model</label>
+      <input type="text" class="form-control" id="model" 
+        [(ngModel)]="car.model"
+        name="model"
+        required>
+    </div>
+    <div class="form-group">
+      <label for="year">year</label>
+      <input type="number" class="form-control" id="year" 
+        [(ngModel)]="car.year"
+        name="year"
+        required>
+    </div>
+    <button type="submit" class="btn btn-default" (click)="submit()">Submit</button>
+  </form>
+</div>
+<div class="container">
+  <div *ngFor="let car of cars; let i = index">
+    {{ car.id }} {{ car.make }} {{ car.model }} {{ car.year }}
+    <button class="btn btn-default" (click)="delete(car.id)">Delete</button>
+    <button class="btn btn-default" (click)="update(car)">Update</button>
+  </div>
+</div>
