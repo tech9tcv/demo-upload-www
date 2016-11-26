@@ -8,7 +8,7 @@ import { CarService } from '../service/car.service';
   styleUrls: ['./car.component.css']
 })
 export class CarComponent implements OnInit {
-  car = new Car(0, '', '', 0);
+  car = new Car(undefined, '', '', undefined);
   cars: Array<Car> = [];
 
   constructor(protected carService: CarService) { 
@@ -42,7 +42,7 @@ export class CarComponent implements OnInit {
       data => {
         console.log(data);
         if(data.result === 'good') {
-          this.car = new Car(0, '', '', 0);
+          this.car = new Car(undefined, '', '', undefined);
           this.getCars();
         }
       },
