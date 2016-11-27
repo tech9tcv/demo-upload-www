@@ -9,6 +9,8 @@ import { CarService } from '../service/car.service';
 })
 export class CarComponent implements OnInit {
   car = new Car(undefined, '', '', undefined);
+  ucar: Car = undefined;
+  dcar: Car = undefined;
   cars: Array<Car> = [];
 
   constructor(protected carService: CarService) { 
@@ -57,6 +59,7 @@ export class CarComponent implements OnInit {
     this.carService.delete(id).subscribe(
       data => {
         console.log(data);
+        this.dcar = undefined;
         this.getCars();
       },
       error => {
@@ -65,8 +68,28 @@ export class CarComponent implements OnInit {
     )
   }
 
-  update(car: Car) {
+  showUpdateModal(car: Car) {
     console.log(car);
+    this.ucar = car;
+  }
+
+  showDeleteModal(car: Car) {
+    this.dcar = car;
+  }
+
+  update() {
+    this.carService.updateCar(this.ucar).subscribe(
+      data => {
+        console.log(data);
+        if(data.result === 'good') {
+          this.ucar = undefined;
+          this.getCars();
+        }
+      },
+      error => {
+        console.error(error);
+      }
+    )
   }
 
 }

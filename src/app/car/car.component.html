@@ -1,36 +1,181 @@
-<p>
-  car works!
-</p>
-<div class="container">
-  <form>
-    <div class="form-group">
-      <label for="make">make</label>
-      <input type="text" class="form-control" id="make" 
-        [(ngModel)]="car.make"
-        name="make"
-        required>
-    </div>
-    <div class="form-group">
-      <label for="model">model</label>
-      <input type="text" class="form-control" id="model" 
-        [(ngModel)]="car.model"
-        name="model"
-        required>
-    </div>
-    <div class="form-group">
-      <label for="year">year</label>
-      <input type="number" class="form-control" id="year" 
-        [(ngModel)]="car.year"
-        name="year"
-        required>
-    </div>
-    <button type="submit" class="btn btn-default" (click)="submit()">Submit</button>
-  </form>
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-ressponsive table-striped table-hover">
+      <thead class="thead-inverse">
+        <tr>
+          <th>id</th>
+          <th>make</th>
+          <th>model</th>
+          <th>year</th>
+          <th>edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of cars; let i = index">
+          <td>{{car.id}}</td>
+          <td>{{car.make}}</td>
+          <td>{{car.model}}</td>
+          <td>{{car.year}}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteCar" (click)="showDeleteModal(car)">delete</button>
+            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalUpdateCar" (click)="showUpdateModal(car)">update</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5"><button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#modalAddCar">add car</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <!--<div *ngFor="let car of cars; let i = index">
+      {{ car.id }} {{ car.make }} {{ car.model }} {{ car.year }}
+      <button class="btn btn-default" (click)="delete(car.id)">Delete</button>
+      <button class="btn btn-default" (click)="update(car)">Update</button>
+    </div>-->
+  </div>
 </div>
-<div class="container">
-  <div *ngFor="let car of cars; let i = index">
-    {{ car.id }} {{ car.make }} {{ car.model }} {{ car.year }}
-    <button class="btn btn-default" (click)="delete(car.id)">Delete</button>
-    <button class="btn btn-default" (click)="update(car)">Update</button>
+<!-- create car modal -->
+<div class="modal fade" id="modalAddCar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">add car</h4>
+      </div>
+      <div class="modal-body">
+        <form #formAddCar="ngForm">
+          <div class="form-group">
+            <label for="make">make</label>
+            <input type="text" class="form-control" id="make" 
+              [(ngModel)]="car.make"
+              name="make"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="model">model</label>
+            <input type="text" class="form-control" id="model" 
+              [(ngModel)]="car.model"
+              name="model"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="year">year</label>
+            <input type="number" class="form-control" id="year" 
+              [(ngModel)]="car.year"
+              name="year"
+              maxlength="4"
+              required>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 text-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+              <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="submit()" [disabled]="!formAddCar.form.valid">submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- update car modal -->
+<!-- Modal -->
+<div class="modal fade" id="modalUpdateCar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">update car</h4>
+      </div>
+      <div class="modal-body">
+        <form #formUpdateCar="ngForm">
+          <div class="form-group">
+            <label for="make">make</label>
+            <input type="text" class="form-control" id="make"
+              *ngIf="ucar"
+              [(ngModel)]="ucar.make"
+              name="make"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="model">model</label>
+            <input type="text" class="form-control" id="model"
+              *ngIf="ucar" 
+              [(ngModel)]="ucar.model"
+              name="model"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="year">year</label>
+            <input type="number" class="form-control" id="year"
+              *ngIf="ucar" 
+              [(ngModel)]="ucar.year"
+              name="year"
+              maxlength="4"
+              required>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 text-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+              <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="update()" [disabled]="!formUpdateCar.form.valid">update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- delete car modal -->
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteCar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">delete car</h4>
+      </div>
+      <div class="modal-body">
+        <form #formDeleteCar="ngForm">
+          <div class="form-group">
+            <label for="make">make</label>
+            <input type="text" class="form-control" id="make"
+              *ngIf="dcar"
+              [(ngModel)]="dcar.make"
+              name="make"
+              readonly="true">
+          </div>
+          <div class="form-group">
+            <label for="model">model</label>
+            <input type="text" class="form-control" id="model"
+              *ngIf="dcar" 
+              [(ngModel)]="dcar.model"
+              name="model"
+              readonly="true">
+          </div>
+          <div class="form-group">
+            <label for="year">year</label>
+            <input type="number" class="form-control" id="year"
+              *ngIf="dcar" 
+              [(ngModel)]="dcar.year"
+              name="year"
+              maxlength="4"
+              readonly="true">
+          </div>
+          <div class="row">
+            <div class="col-xs-12 text-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+              <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="delete(dcar.id)">delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
