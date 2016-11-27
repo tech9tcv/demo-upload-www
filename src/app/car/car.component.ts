@@ -9,19 +9,63 @@ import { CarService } from '../service/car.service';
 })
 export class CarComponent implements OnInit {
   car = new Car(undefined, '', '', undefined);
-  ucar: Car = undefined;
-  dcar: Car = undefined;
+  modalHeading: string = 'Add Car';
   cars: Array<Car> = [];
+  mode = 'create';
 
   constructor(protected carService: CarService) { 
 
   }
 
   ngOnInit() {
-    this.getCars();
+    this.listCars();
   }
 
-  private getCars() {
+  showAddModal() {
+    this.modalHeading = 'add car';
+    this.mode = 'create';
+    this.car = new Car(undefined, '', '', undefined);
+  }
+
+  showUpdateModal(car: Car) {
+    console.log(car);
+    this.modalHeading = 'update car';
+    this.mode = 'update';
+    this.car = car;
+  }
+
+  showDeleteModal(car: Car) {
+    this.modalHeading = 'delete car';
+    this.mode = 'delete';
+    this.car = car;
+  }
+
+  submit() {
+    if (this.mode === 'create') {
+      this.create();
+    } else if (this.mode === 'update') {
+      this.update();
+    } else if (this.mode === 'delete') {
+      this.delete();
+    }
+  }
+
+  create() {
+    this.carService.createCar(this.car).subscribe(
+      data => {
+        console.log(data);
+        if(data.result === 'good') {
+          this.car = new Car(undefined, '', '', undefined);
+          this.listCars();
+        }
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
+
+  private listCars() {
     this.cars = [];
     this.carService.getCars().subscribe(
       data => {
@@ -37,54 +81,27 @@ export class CarComponent implements OnInit {
     )
   }
 
-  submit() {
-    console.log('submit');
-    console.log(JSON.stringify(this.car));
-    this.carService.createCar(this.car).subscribe(
-      data => {
-        console.log(data);
-        if(data.result === 'good') {
-          this.car = new Car(undefined, '', '', undefined);
-          this.getCars();
-        }
-      },
-      error => {
-        console.error(error);
-      }
-    )
-  }
-
-  delete(id: number) {
-    console.log(id);
-    this.carService.delete(id).subscribe(
-      data => {
-        console.log(data);
-        this.dcar = undefined;
-        this.getCars();
-      },
-      error => {
-        console.error(error);
-      }
-    )
-  }
-
-  showUpdateModal(car: Car) {
-    console.log(car);
-    this.ucar = car;
-  }
-
-  showDeleteModal(car: Car) {
-    this.dcar = car;
-  }
-
   update() {
-    this.carService.updateCar(this.ucar).subscribe(
+    this.carService.updateCar(this.car).subscribe(
       data => {
         console.log(data);
         if(data.result === 'good') {
-          this.ucar = undefined;
-          this.getCars();
+          this.car = undefined;
+          this.listCars();
         }
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
+
+  delete() {
+    this.carService.delete(this.car.id).subscribe(
+      data => {
+        console.log(data);
+        this.car = undefined;
+        this.listCars();
       },
       error => {
         console.error(error);
